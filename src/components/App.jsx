@@ -1,17 +1,23 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import { Suspense } from "react";
-import { Loader } from "./Loader/Loader";
-import { Tweets } from '../pages/Tweets/Tweets';
+import { Routes, Route } from 'react-router-dom';
+import { Layout } from './Layout/Layout';
 
-function App() {
+import { lazy } from 'react';
+
+const Home = lazy(() => import('../pages/Home/Home'));
+const Tweets = lazy(() => import('pages/Tweets/Tweets'));
+const Error = lazy(()=> import('./Error/Error'))
+
+export const App = () => {
   return (
-    <Suspense fallback={<Loader />}>
-      <Routes>
-        <Route path="tweets" element={<Tweets />} />
-        <Route path="*" element={<Navigate to="/" replace={true} />} />
-      </Routes>
-    </Suspense>
-  );
-}
+    <>
+    <Routes>
+      <Route path="/" element={<Layout/>}>
+        <Route index element={<Home/>}/>
+        <Route path="/tweets" element={<Tweets/>}/>
+        <Route path="*" element={<Error/>}/>
+      </Route>
+    </Routes>
+    </>
+  )
+};
 
-export default App;

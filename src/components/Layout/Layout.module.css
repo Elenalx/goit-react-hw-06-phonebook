@@ -1,0 +1,31 @@
+.header {
+    position: striky;
+    z-index: 1100;
+    top: 0;
+    left: 0;
+    height: 50px;
+    padding: 15px 25px;
+    display: flex;
+    text-align: center;
+
+    background-color: rgb(75, 64, 234);
+    box-shadow: inset 0 0 10px 5px rgba(0, 0, 0, 0.3);
+}
+
+.nav {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+}
+
+.navLink {
+    list-style: none;
+    font-size: xx-large;
+    text-decoration: none;
+    color: rgb(221, 171, 31);
+}
+
+.navLink:hover {
+    color: white;
+}

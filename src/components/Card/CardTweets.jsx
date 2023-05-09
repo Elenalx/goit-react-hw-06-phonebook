@@ -1,59 +1,76 @@
-import { useEffect, useState } from "react";
-import css from "./CardTweets.module.css";
-import logo from "../../image/goit_logo.png";
-import avatarDefault from "../../image/avatar.png";
+import Logo from 'image/goit_logo.png'
+import mainPicture from 'image/cardImg.png';
+import Line from 'image/centerLine.png';
+import { useState } from 'react';
+import { useLocaleStorage } from 'components/Hooks/localeStorage';
+import css from './CardTweets.module.css';
 
-export const CardTweet = ({ user }) => {
-  const { id, tweets, followers, avatar = avatarDefault } = user;
-  const [isFollowing, setIsFollowing] = useState(
-    JSON.parse(localStorage.getItem(`${id}-isFollowing`)) ?? false
+import axios from 'axios';
+
+export const CardTweets = ({ user }) => {
+  const { id, tweets, followers, avatar } = user;
+  //  const [isFollowing, setIsFollowing] = useState(false);
+
+  const [isFollowing, setIsFollowing] = useLocaleStorage(
+    `following${id}`,
+    false
   );
-  const [followersNum, setFollowersNum] = useState(
-    JSON.parse(localStorage.getItem(`${id}-followersNum`)) ?? followers
-  );
+  const [follower, setFollower] = useState(followers);
 
-  useEffect(() => {
-    localStorage.setItem(`${id}-isFollowing`, JSON.stringify(isFollowing));
-    localStorage.setItem(`${id}-followersNum`, JSON.stringify(followersNum));
-  }, [id, isFollowing, followersNum]);
+  const hendleOnFollowing = async () => {
+    const followingUser = isFollowing ? follower - 1 : follower + 1;
+    try {
+      await axios.put(
+        `https://64411770792fe886a89e1645.mockapi.io/user/${id}`,
+        { followers: followingUser }
+      );
 
-  const onFollowClick = () => {
-    setIsFollowing(true);
-    setFollowersNum(followersNum + 1);
+      setFollower(followingUser);
+      setIsFollowing(true);
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const onFollowingClick = () => {
-    setIsFollowing(false);
-    setFollowersNum(followersNum - 1);
-  };
 
+ 
   return (
-    <div className={css.card}>
-      <img alt="logo" className={css.logo} src={logo}></img>
-      <div className={css.wrapper}>
-        <div className={css.picture}></div>
-        <div className={css.avatar}>
-          <img alt="avatar" src={avatar} className={css.avatarInner}></img>
-        </div>
+    <li key={id} className={css.box}>
+      <a href="./">
+        <img
+          className={css.logo}
+          src={Logo}
+          alt="logo"
+          width="76"
+          height="22"
+        />
+      </a>
+      <img className={css.picture} src={mainPicture} alt="mainPicture" />
+
+      <img src={Line} alt="line" />
+      <div className={css.avatarBox}>
+        <img className={css.image} src={avatar} alt="userPhoto" />
       </div>
-      <p className={css.tweetsText}> {tweets} tweets</p>
-      <p className={css.followersText}>
-        {followersNum.toLocaleString("en-US")} Followers
-      </p>
-      <div className={css.buttonBox}>
+      <div className={css.userInfo}>
+        <p className={css.text}>{tweets} TWEETS</p>
+        <p className={css.text}>{follower.toLocaleString('en-US')} FOLLOWERS</p>
         {isFollowing ? (
           <button
+            className={css.buttonFollowing}
             type="button"
-            className={`${css.button} ${css.buttonFollowing}`}
-            onClick={onFollowingClick}
+            onClick={hendleOnFollowing}
           >
-            Following
+            FOLLOWING
           </button>
         ) : (
-          <button type="button" className={css.button} onClick={onFollowClick}>
-            Follow
+          <button
+            className={css.button}
+            type="button"
+            onClick={hendleOnFollowing}
+          >
+            FOLLOW
           </button>
         )}
       </div>
-    </div>
+    </li>
   );
 };

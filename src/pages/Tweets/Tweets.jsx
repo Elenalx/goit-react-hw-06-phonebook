@@ -1,36 +1,23 @@
-import { useState } from "react";
-import { CardList } from "components/CardList/CardList";
-import css from "./Tweets.module.css";
-import { RiArrowGoBackFill } from "react-icons/ri";
-import { Link } from "react-router-dom";
-import contacts from '../../components/services/contacts';
+import { Link, useLocation } from 'react-router-dom';
+import css from './Tweets.module.css';
 
-export const Tweets = () => {
-  const users = contacts.users;
-  const [value, setValue] = useState("all");
-  const handleChange = (e) => {
-    setValue(e.target.value);
-  };
-
+const Tweets = () => {
+  const location = useLocation();
+  const backLinkLocation = location.state?.from ?? '/';
   return (
-    <div className={css.wrapper}>
-      <div className={css.buttonBox}>
-        <Link to="Home" className={css.button}>
-          Back <RiArrowGoBackFill className={css.icon} />
-        </Link>
-      </div>
-      <div className={css.filterBlock}>
-        <label className={css.label}>
-          Filter
-          <select value={value} onChange={handleChange} className={css.list}>
-            <option value="all">all</option>
-            <option value="follow">follow</option>
-            <option value="followings">followings</option>
-          </select>
-        </label>
-        <p>Showing {value}</p>
-      </div>
-          <CardList filter={value} users={users} />
+    <div className={css.tweetsPage}>
+    
+        <h2 className={css.title}> Wellcome to your selected users.</h2>
+        <p className={css.text}>
+          In future you will see more information about users.
+        </p>
+     
+      <Link className={css.backBtn} to={backLinkLocation}>
+        <button className={css.button} type="button">
+          GO BACK
+        </button>{' '}
+      </Link>
     </div>
   );
 };
+export default Tweets;
