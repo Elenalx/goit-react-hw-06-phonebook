@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/562.b47caf7c.chunk.js","mappings":"wIAMA,UANc,WACV,OACIA,EAAAA,EAAAA,KAAAC,EAAAA,SAAA,GAGR,C","sources":["components/Error/Error.js"],"sourcesContent":["const Error = ()=> {\n    return (\n        <>\n       </>\n    )\n}\nexport default Error;"],"names":["_jsx","_Fragment"],"sourceRoot":""}
